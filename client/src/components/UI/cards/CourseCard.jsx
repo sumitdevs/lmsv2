@@ -64,7 +64,7 @@ function CourseCard({ title, princing, instructor, _id, thumbnail, rating = 4.9 
             <span className='line-through text-gray-400 mr-2'>${Math.round(princing)}</span>
             <span className='text-green-500'>Free</span>
           </p>
-          <Link to={`/courses/${_id}`} className='text-[var(--clr-accent-900)] font-semibold transition-colors hover:text-[var(--clr-accent-700)]'>
+          <Link to={`/courses/${_id}`} className='text-[var(--clr-accent-900)] font-semibold transition-colors hover:text-[var(--clr-primary-900)]'>
             View More &rarr;
           </Link>
         </div>

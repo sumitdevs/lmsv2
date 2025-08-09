@@ -26,7 +26,7 @@ function Login() {
   }
   return (
     <>
-      <section id="breadcrumb" className='h-14 bg-[var(--clr-accent-100)]'>
+      <section id="breadcrumb" className='h-14 mt-20 bg-[var(--clr-accent-100)]'>
         <nav aria-label='Breadcrumb' className='container flex items-center h-full text-[var(--clr-primary-900)]'>
           <ol className='flex gap-x-1 '>
             <li><a href="/">Home</a></li>
@@ -35,7 +35,8 @@ function Login() {
           </ol>
         </nav>
       </section>
-      <section id='loginform' className='mt-16 mb-40'>
+
+      <section id='loginform' className='mt-16 mb-22'>
         <div id="form-wrapper" className='container text-[var(--clr-primary-900)]'>
           <div className='grid grid-cols-1 md:grid-cols-2 gap-x-28 items-center'>
             <div className='flex flex-col gap-y-6 w-full md:max-w-[26rem] md:ml-auto'>
@@ -62,7 +63,7 @@ function Login() {
               </div>
               <a className='h-12  rounded-lg px-4 border border-[var(--clr-primary-200)] flex items-center justify-center gap-x-2 ' href="#"><img src="/icons/google.svg" alt="" />Log in with google</a>
             </div>
-            <div>
+            <div className='hidden md:block'>
               <img src="/images/login.svg" alt="" />
             </div>
           </div>

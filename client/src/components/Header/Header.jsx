@@ -20,8 +20,32 @@ function Header() {
     cookieLogin();
   }, [isAuthenticated]);
 
+  const [isVisible, setIsVisible] = useState(true);
+  const [lastScrollY, setLastScrollY] = useState(0);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const currentScrollY = window.scrollY;
+
+      if (currentScrollY < lastScrollY || currentScrollY < 10) {
+        setIsVisible(true); // Scroll up or near top
+      } else {
+        setIsVisible(false); // Scroll down
+      }
+
+      setLastScrollY(currentScrollY);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, [lastScrollY]);
+
   return (
-    <header className="bg-[var(--clr-primary-900)] relative z-50">
+    <header
+      className={`bg-[var(--clr-primary-900)] fixed top-0 left-0 w-full z-20 transition-transform duration-300 ${
+        isVisible ? "translate-y-0" : "-translate-y-full"
+      }`}
+    >
       <div className="container">
         <div className="nav-wrapper h-20 flex justify-between items-center">
           <Link className="sm:w-1/4" to="/">
@@ -187,7 +211,7 @@ function Header() {
 
       {/* Slide-in Mobile Menu */}
       <div
-        className={`fixed top-0 right-0 w-3/4 max-w-sm h-full bg-white z-40 transform transition-transform duration-300 ease-in-out min-[900px]:hidden ${
+        className={`fixed top-0 right-0 w-3/4 max-w-sm h-screen bg-white z-40 transform transition-transform duration-300 ease-in-out min-[900px]:hidden ${
           mobileMenuOpen ? "translate-x-0" : "translate-x-full"
         }`}
       >
@@ -250,7 +274,11 @@ function Header() {
             </div>
           ) : (
             <div className="space-y-3 pt-5">
-              <Link to="/dashboard" onClick={() => setMobileMenuOpen(false)} className="block text-white bg-[var(--clr-primary-900)] py-2 text-center rounded-md">
+              <Link
+                to="/dashboard"
+                onClick={() => setMobileMenuOpen(false)}
+                className="block text-white bg-[var(--clr-primary-900)] py-2 text-center rounded-md"
+              >
                 Dashboard
               </Link>
               <Link

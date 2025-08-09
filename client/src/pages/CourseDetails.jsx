@@ -1,311 +1,379 @@
-import React, { useState } from 'react';
-import { useLocation, useNavigate, useParams } from 'react-router-dom';
-import { FaAngleUp,FaAngleDown } from "react-icons/fa6";
-import { MdOutlineVideoLibrary } from "react-icons/md";
-import { MdLockOutline } from "react-icons/md";
-import { FaLinkedin } from "react-icons/fa";
-import { FaXTwitter } from "react-icons/fa6";
-import { FaYoutube } from "react-icons/fa";
-import { FaFacebookF } from "react-icons/fa6";
-import clsx from 'clsx';
-import { useQuery } from '@tanstack/react-query';
-import { fetchCourseByID } from '../api/courses';
-import useAuthStore from '../store/authStore';
-import useCartStore from '../store/cartStore';
+import React, { useState } from "react";
+// import { useLocation, useNavigate, useParams } from "react-router-dom";
+import SidebarCard from "../components/UI/cards/SidebarCard";
+import {
+  Star,
+  PlayCircle,
+  ChevronDown,
+  ChevronUp,
+} from "lucide-react";
+
+// Mock data to simulate a course coming from an API
+const courseData = {
+  id: 1,
+  title: "The Complete Web Development Bootcamp",
+  headline:
+    "Learn to code and become a web developer. Master React, Node.js, and more in this all-in-one bootcamp.",
+  rating: 4.7,
+  reviewCount: 1354,
+  students: "12,500",
+  instructor: {
+    name: "John Doe",
+    title: "Lead Software Engineer",
+    bio: "John has over 10 years of experience in the tech industry. He specializes in full-stack development and has taught thousands of students to code.\n\nI’m passionate about frontend development and UI/UX design. I’ve built projects using HTML, CSS, JavaScript, ReactJS, NodeJS, ExpressJS, MongoDB, and I also have skills in AI & ML, Python, and DSA in Java. ",
+    image:
+      "https://images.pexels.com/photos/15371442/pexels-photo-15371442.jpeg",
+  },
+  price: 199.99,
+  discountPrice: 19.99,
+  previewVideoUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ",
+  features: [
+    "24 hours on-demand video",
+    "8 articles",
+    "3 downloadable resources",
+    "Full lifetime access",
+    "Access on mobile and TV",
+    "Certificate of completion",
+  ],
+  curriculum: [
+    {
+      title: "Introduction to Web Development",
+      duration: "45 min",
+      lessons: [
+        { title: "What is Web Development?", duration: "5 min" },
+        { title: "Setting up your environment", duration: "20 min" },
+        { title: "Your first HTML page", duration: "20 min" },
+      ],
+    },
+    {
+      title: "Mastering HTML5 & CSS3",
+      duration: "2 hours",
+      lessons: [
+        { title: "HTML5 Semantic Tags", duration: "30 min" },
+        { title: "CSS Flexbox and Grid", duration: "50 min" },
+        { title: "Responsive Design with Media Queries", duration: "40 min" },
+      ],
+    },
+    {
+      title: "JavaScript Essentials",
+      duration: "3.5 hours",
+      lessons: [
+        { title: "Variables and Data Types", duration: "30 min" },
+        { title: "Functions and Scope", duration: "60 min" },
+        { title: "DOM Manipulation", duration: "2 hours" },
+      ],
+    },
+    {
+      title: "React.js Fundamentals",
+      duration: "6 hours",
+      lessons: [
+        { title: "Introduction to React", duration: "1 hour" },
+        { title: "React Components and Props", duration: "1.5 hours" },
+        { title: "State and Lifecycle", duration: "2 hours" },
+        { title: "Hooks: useState and useEffect", duration: "1.5 hours" },
+      ],
+    },
+  ],
+  reviews: [
+    {
+      name: "Alice M.",
+      rating: 5,
+      comment:
+        "This course is fantastic! The instructor is clear and the pace is perfect. Highly recommend!",
+      avatar: "https://placehold.co/50x50/A0A0A0/FFFFFF?text=AM",
+    },
+    {
+      name: "Bob J.",
+      rating: 5,
+      comment:
+        "I learned more here than in a college course. The content is practical and up-to-date.",
+      avatar: "https://placehold.co/50x50/A0A0A0/FFFFFF?text=BJ",
+    },
+    {
+      name: "Charlie T.",
+      rating: 4,
+      comment:
+        "Great course, but I wish there were more exercises. Still, worth every penny.",
+      avatar: "https://placehold.co/50x50/A0A0A0/FFFFFF?text=CT",
+    },
+  ],
+};
 
 function CourseDetails() {
-    const {user,isAuthenticated, cookieLogin} = useAuthStore();
-    const {addToCart} = useCartStore();
-    const [activeTab,setActiveTab] = useState('overview');
-    const [activeList,setActiveList] = useState(null);
-    const [cart,setCart] = useState(false);
-    const {courseID} = useParams();
-    const navigate = useNavigate();
-    const location = useLocation();
-    const {
-        data: courseDetails,
-        isLoading,
-        isError
-    } = useQuery({
-        queryKey: ['courseDetails', courseID],
-        queryFn: () => fetchCourseByID(courseID),
-        staleTime: 1000 * 60 * 5,
-        enabled: !!courseID
-    });
 
-    const toggleList = (idx)=>{
-        setActiveList(activeList===idx?null:idx);
-    }
-    const handleAuthNavigation = () =>{
-        if(!isAuthenticated){
-            navigate('/login',{state:{from:location.pathname}})
-        }
-    }
+  // const { user, isAuthenticated, cookieLogin } = useAuthStore();
+  // const { addToCart } = useCartStore();
+  // const [activeTab, setActiveTab] = useState("overview");
+  // const [activeList, setActiveList] = useState(null);
+  // const [cart, setCart] = useState(false);
+  // const { courseID } = useParams();
+  // const navigate = useNavigate();
+  // const location = useLocation();
+  // const {
+  //   data: courseDetails,
+  //   isLoading,
+  //   isError,
+  // } = useQuery({
+  //   queryKey: ["courseDetails", courseID],
+  //   queryFn: () => fetchCourseByID(courseID),
+  //   staleTime: 1000 * 60 * 5,
+  //   enabled: !!courseID,
+  // });
 
-    const handleCart =()=>{
-        if(!cart){
-            addToCart()
-            setCart(true);
-        }
-    }
-    return (
-        <>
-            <div className="relative before:content-[''] before:absolute before:-z-10 before:top-0 before:left-0 before:h-80 before:w-full before:bg-[var(--clr-primary-800)]">
-                <div className='container' >
-                    <section id="breadcrumb" className='h-14'>
-                        <nav aria-label='Breadcrumb' className='flex items-center h-full '>
-                            <ul className='flex gap-x-1 '>
-                                <li><a href="/">Home</a></li>
-                                <li aria-hidden="true">›</li>
-                                <li><a className='' href="/courses">Courses</a></li>
-                                <li aria-hidden="true">›</li>
-                                <li><a className='text-[var(--clr-accent-900)]' href="/courses">Cyber security fundamental</a></li>
-                            </ul>
-                        </nav>
-                    </section>
-                    <section>
-                        <div className="flex pb-16 pt-9">
-                            <div className='flex-2/3'>
-                                <div>
-                                    <h6 className='text-white'><span className='font-light' >by</span> {courseDetails?.instructor?.user?.name}</h6>
-                                    <div className='flex flex-col gap-y-4'>
-                                        <h2 className='text-white'>{courseDetails?.title}</h2>
-                                        <p className='w-full max-w-3xl'>{courseDetails?.description}</p>
-                                    </div>
-                                    <div className='flex gap-x-6 mt-8'>
-                                        <span className='flex text-[var(--clr-primary-100)] gap-x-2 items-center justify-center'>
-                                            <svg className="h-4 w-4">
-                                                <use href="../icons/detailsicon.svg#ic1"></use>
-                                            </svg>
-                                            2 Weeks
-                                        </span>
-                                        <span className='flex text-[var(--clr-primary-100)] gap-x-2 items-center justify-center'>
-                                            <svg className="h-4 w-4">
-                                                <use href="../icons/detailsicon.svg#ic2"></use>
-                                            </svg>
-                                            156 Students
-                                        </span>
-                                        <span className='flex text-[var(--clr-primary-100)] gap-x-2 items-center justify-center'>
-                                            <svg className="h-4 w-4">
-                                                <use href="../icons/detailsicon.svg#ic3"></use>
-                                            </svg>
-                                            All levels
-                                        </span>
-                                        <span className='flex text-[var(--clr-primary-100)] gap-x-2 items-center justify-center'>
-                                            <svg className="h-4 w-4">
-                                                <use href="../icons/detailsicon.svg#ic4"></use>
-                                            </svg>
-                                            20 Lessons
-                                        </span>
-                                        <span className='flex text-[var(--clr-primary-100)] gap-x-2 items-center justify-center'>
-                                            <svg className="h-4 w-4">
-                                                <use href="../icons/detailsicon.svg#ic5"></use>
-                                            </svg>
-                                            3 Quizzes
-                                        </span>
-                                    </div>
-                                </div>
-                                <div className='mt-12 mb-40'>
-                                    <div className='w-full max-w-4xl bg-[var(--clr-accent-100)] text-[var(--clr-primary-900)]'>
-                                        <div role='tablist' className='flex text-lg bg-white'>
-                                            <button onClick={()=>setActiveTab('overview')} className={clsx('rounded-tl-lg w-full py-3 border border-[var(--clr-primary-100)]',{'bg-[var(--clr-accent-100)]':activeTab==='overview'})}>Overview</button>
-                                            <button onClick={()=>setActiveTab('curriculam')} className={clsx('w-full py-3 border-y border-[var(--clr-primary-100)]',{'bg-[var(--clr-accent-100)]':activeTab==='curriculam'})}>Curriculam</button>
-                                            <button onClick={()=>setActiveTab('instructor')} className={clsx('w-full py-3 border-y border-l border-[var(--clr-primary-100)]',{'bg-[var(--clr-accent-100)]':activeTab==='instructor'})}>Instructor</button>
-                                            <button onClick={()=>setActiveTab('review')} className={clsx('rounded-tr-lg w-full py-3 border border-[var(--clr-primary-100)]',{'bg-[var(--clr-accent-100)]':activeTab==='review'})}>Review</button>
-                                        </div>
-                                        <div className='mt-8 px-6 pb-14'>
-                                            {activeTab ==='overview' && 
-                                            <div id="tab1" className=''>
-                                                <p>Cybersecurity Fundamentals: Defend and Detect is a foundational course designed to equip learners with essential knowledge and practical skills in protecting digital systems and data. The course focuses on two critical aspects of cybersecurity: defense and detection. Participants will learn how to safeguard computer networks, systems, and applications from cyber threats while gaining insights into identifying, analyzing, and responding to potential security incidents.</p>
-                                                <h3>Key topics include:</h3>
-                                                <ul className='list-disc pl-6'>
-                                                    <li>Core principles of cybersecurity and threat landscapes</li>
-                                                    <li>Network security protocols and defensive strategie</li>
-                                                    <li>Common attack vectors such as phishing, malware, and social engineering</li>
-                                                    <li>Techniques for threat detection, including intrusion detection systems (IDS) and log analysis</li>
-                                                    <li>Fundamentals of incident response and forensic investigation</li>
-                                                </ul>
-                                            </div>
-                                            }
-                                            {activeTab==='curriculam' && 
-                                            <div>
-                                                <dl className='flex flex-col gap-y-4'>
-                                                    {!isLoading && courseDetails.module.map((list,idx)=>(
-                                                        <div key={idx} className='bg-white rounded-lg px-6 py-4'>
-                                                            <dt onClick={()=>toggleList(idx)} className='text-lg select-none cursor-pointer flex justify-between mb- ' id='data-toogle'>
-                                                                <span className='flex items-center gap-x-2'>
-                                                                    {activeList === idx ? <FaAngleUp className='text-lg' />:
-                                                                    <FaAngleDown className='text-lg' />}
-                                                                    {list.title}
-                                                                </span>
-                                                                <span className='flex gap-x-4'>
-                                                                    <span>12 Lessons</span>
-                                                                    <span>45 mins</span>
-                                                                </span>
-                                                            </dt>
-                                                            {activeList === idx &&
-                                                                <dd className="mt-6 px-2 flex flex-col gap-y-4">
-                                                                    {list.video.map(vid=>(
-                                                                        <a href='#' className='flex justify-between'>
-                                                                            <span className='flex items-center gap-x-1'>
-                                                                                <MdOutlineVideoLibrary/>
-                                                                                <span>{vid.title}</span>
-                                                                            </span>
-                                                                            <span className='flex items-center gap-x-4'>
-                                                                                <span>12:30</span>
-                                                                                <MdLockOutline />
-                                                                            </span>
-                                                                        </a>
-                                                                    ))}
-                                                                </dd>
-                                                            }
-                                                        </div>
-                                                    ))}
-                                                </dl>
-                                            </div>
-                                            }
-                                            {activeTab==='instructor' && 
-                                            <div>
-                                                <div className='flex gap-x-4'>
-                                                    <div id="profile" className='w-45 h-45 overflow-hidden rounded-lg'>
-                                                        <img className='h-full w-full object-cover -scale-x-100' src="../images/prof1.jpg" alt="" />
-                                                    </div>
-                                                    <div className='flex-1'>
-                                                        <a className='text-lg' href="#">{courseDetails?.instructor?.user?.name}</a>
-                                                        <p>
-                                                            A cybersecurity specialist with a PhD in mathematics, 
-                                                            focusing on Elliptic Curve Cryptography. He is certified
-                                                            in CSAP, CySA+, Security+, and ISC2, and has shared insights on 
-                                                            transitioning from mathematics to cybersecurity, emphasizing
-                                                            hands-on platforms like TryHackMe and Hack The Box.
-                                                        </p>
-                                                        <div className='flex items-center gap-x-4 mt-4'>
-                                                            <span>Follow:</span>
-                                                            <span className='flex gap-x-2'>
-                                                                <FaLinkedin/>
-                                                                <FaFacebookF/>
-                                                                <FaXTwitter/>
-                                                                <FaYoutube/>
-                                                            </span>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            }
-                                            {activeTab==='review' && 
-                                            <div>
-                                                <div className='flex flex-col gap-y-8'>
-                                                    <div className='flex items-center gap-x-4'>
-                                                        <p className='text-4xl self-start'>4.0</p>
-                                                        <div>
-                                                            <span className='flex gap-x-1'>
-                                                                <svg className="h-4 w-4">
-                                                                    <use href="../icons/detailsicon.svg#ic8"></use>
-                                                                </svg>
-                                                                <svg className="h-4 w-4">
-                                                                    <use href="../icons/detailsicon.svg#ic8"></use>
-                                                                </svg>
-                                                                <svg className="h-4 w-4">
-                                                                    <use href="../icons/detailsicon.svg#ic8"></use>
-                                                                </svg>
-                                                                <svg className="h-4 w-4">
-                                                                    <use href="../icons/detailsicon.svg#ic8"></use>
-                                                                </svg>
-                                                                <svg className="h-4 w-4 ">
-                                                                    <use href="../icons/detailsicon.svg#ic11"></use>
-                                                                </svg>
-                                                            </span>
-                                                            <p>based on 146,951 ratings</p>
-                                                        </div>
-                                                    </div>
-                                                    <div className='flex items-center gap-x-4'>
-                                                        <div className='h-15  w-15 rounded-full overflow-hidden'>
-                                                            <img className='h-full w-full object-cover' src="../images/prof2.jpg" alt="" />
-                                                        </div>
-                                                        <div className='flex-1'>
-                                                            <div className='flex justify-between items-center mb-2'>
-                                                                <h6>Laura Hipster</h6>
-                                                                <p className='text-[var(--clr-primary-400)]'>October 03, 2022</p>
-                                                            </div>
-                                                            <p>Quisque nec non amet quis. Varius tellus justo odio parturient mauris curabitur lorem in. Pulvinar sit ultrices mi ut eleifend luctus ut. Id sed faucibus bibendum augue id cras purus. At eget euismod cursus non. Molestie dignissim sed volutpat feugiat vel.</p>
-                                                        </div>
-                                                    </div>
-                                                    <div className='flex items-center gap-x-4'>
-                                                        <div className='h-15  w-15 rounded-full overflow-hidden'>
-                                                            <img className='h-full w-full object-cover' src="../images/prof2.jpg" alt="" />
-                                                        </div>
-                                                        <div className='flex-1'>
-                                                            <div className='flex justify-between items-center mb-2'>
-                                                                <h6>Laura Hipster</h6>
-                                                                <p className='text-[var(--clr-primary-400)]'>October 03, 2022</p>
-                                                            </div>
-                                                            <p>Quisque nec non amet quis. Varius tellus justo odio parturient mauris curabitur lorem in. Pulvinar sit ultrices mi ut eleifend luctus ut. Id sed faucibus bibendum augue id cras purus. At eget euismod cursus non. Molestie dignissim sed volutpat feugiat vel.</p>
-                                                        </div>
-                                                    </div>
-                                                    <div className='flex items-center gap-x-4'>
-                                                        <div className='h-15  w-15 rounded-full overflow-hidden'>
-                                                            <img className='h-full w-full object-cover' src="../images/prof2.jpg" alt="" />
-                                                        </div>
-                                                        <div className='flex-1'>
-                                                            <div className='flex justify-between items-center mb-2'>
-                                                                <h6>Laura Hipster</h6>
-                                                                <p className='text-[var(--clr-primary-400)]'>October 03, 2022</p>
-                                                            </div>
-                                                            <p>Quisque nec non amet quis. Varius tellus justo odio parturient mauris curabitur lorem in. Pulvinar sit ultrices mi ut eleifend luctus ut. Id sed faucibus bibendum augue id cras purus. At eget euismod cursus non. Molestie dignissim sed volutpat feugiat vel.</p>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <nav className='mt-12' >
-                                                    <ul className='flex w-full items-center justify-center gap-x-4'>
-                                                        <li className='h-10 w-10 flex items-center justify-center rounded-full hover:border-none hover:text-white border border-[var(--clr-primary-100)] hover:bg-[var(--clr-accent-900)]'>&lt;</li>
-                                                        <li className='h-10 w-10 flex items-center justify-center rounded-full hover:border-none text-white border border-[var(--clr-primary-100)] bg-[var(--clr-accent-900)]'>1</li>
-                                                        <li className='h-10 w-10 flex items-center justify-center rounded-full hover:border-none hover:text-white border border-[var(--clr-primary-100)] hover:bg-[var(--clr-accent-900)]'>1</li>
-                                                        <li className='h-10 w-10 flex items-center justify-center rounded-full hover:border-none hover:text-white border border-[var(--clr-primary-100)] hover:bg-[var(--clr-accent-900)]'>1</li>
-                                                        <li className='h-10 w-10 flex items-center justify-center rounded-full hover:border-none hover:text-white border border-[var(--clr-primary-100)] hover:bg-[var(--clr-accent-900)]'>&gt;</li>
-                                                    </ul>
-                                                </nav>
-                                            </div>
-                                            }
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div className='flex-1/3 '>
-                                <div className='rounded-2xl sticky shadow top-4 flex flex-col w-fit p-1  bg-[var(--clr-accent-100)]'>
-                                    <div className='max-w-[26rem] rounded-t-2xl overflow-hidden'>
-                                        <img className='w-full h-full object-cover' src="../images/img1.jpg" alt="" />
-                                    </div>
-                                    <div className='px-4 mt-6 pb-10 flex flex-col gap-y-6'>
-                                        <div className='flex items-center justify-between'>
-                                            <div className='flex gap-x-4 items-center'>
-                                                <h6>₹5500</h6>
-                                                <p className='flex gap-x-2'><span className='text-[var(--clr-primary-400)] line-through'>₹10,999</span> <span className='text-[var(--clr-accent-900)]'>50% OFF</span></p>
-                                            </div>
-                                            <a href='#' className='w-10 h-9 rounded-sm flex items-center justify-center bg-white overflow-hidden'>
-                                                <svg className=" w-6 h-6 ">
-                                                    <use href="../icons/detailsicon.svg#ic6"></use>
-                                                </svg>
-                                            </a>
-                                        </div>
-                                        <div className='flex gap-x-4'>
-                                            <button onClick={()=>{handleAuthNavigation()}} className='bg-[var(--clr-accent-900)] hover:bg-[var(--clr-accent-1000)] cursor-pointer rounded-lg py-4 flex-1'>enroll now</button>
-                                            <button onClick={()=>{handleAuthNavigation(); handleCart()}} className='flex gap-x-2 rounded-lg cursor-pointer text-black items-center justify-center px-5 py-4 border hover:border-[var(--clr-accent-1000)] border-[var(--clr-primary-400)] '>
-                                                +
-                                                <svg className=" w-6 h-6 ">
-                                                    <use href="../icons/detailsicon.svg#ic7"></use>
-                                                </svg>
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </section>
+  // const toggleList = (idx) => {
+  //   setActiveList(activeList === idx ? null : idx);
+  // };
+  // const handleAuthNavigation = () => {
+  //   if (!isAuthenticated) {
+  //     navigate("/login", { state: { from: location.pathname } });
+  //   }
+  // };
+
+  // const handleCart = () => {
+  //   if (!cart) {
+  //     addToCart();
+  //     setCart(true);
+  //   }
+  // };
+
+
+  // State for the curriculum accordion
+  const [openSection, setOpenSection] = useState(null);
+  const toggleSection = (index) => {
+    setOpenSection(openSection === index ? null : index);
+  };
+
+
+  return (
+    <div className="bg-white text-gray-800 antialiased">
+      <section
+        id="breadcrumb"
+        className="container h-14 mt-20 bg-[var(--clr-accent-100)]"
+      >
+        <nav aria-label="Breadcrumb" className="flex items-center h-full ">
+          <ul className="flex gap-x-1 ">
+            <li>
+              <a href="/">Home</a>
+            </li>
+            <li aria-hidden="true">›</li>
+            <li>
+              <a className="" href="/courses">
+                Courses
+              </a>
+            </li>
+            <li aria-hidden="true">›</li>
+            <li>
+              <a className="text-[var(--clr-accent-900)]" href="/courses">
+                Cyber security fundamental
+              </a>
+            </li>
+          </ul>
+        </nav>
+      </section>
+      <main className="sec-wrap pt-8 pb-16 sm:py-16">
+        {/* Course Header and Details Card Section */}
+        <div className="lg:flex lg:gap-8">
+          <div className="lg:w-2/3">
+            {/* Course Header Section */}
+            <header className="bg-[var(--clr-primary-900)] text-white rounded-lg p-6 md:p-8">
+              <h1 className="text-h2 text-white">{courseData.title}</h1>
+              <p className="mt-4 mb-6 text-gray-300">{courseData.headline}</p>
+
+              {/* Rating and Student Info */}
+              <div className="flex flex-wrap items-center gap-x-4 gap-y-1">
+                <div className="flex items-center">
+                  <span className="text-yellow-400 font-bold text-h6 mr-2">
+                    {courseData.rating}
+                  </span>
+                  <div className="flex text-yellow-400">
+                    {[...Array(5)].map((_, i) => (
+                      <Star
+                        key={i}
+                        size={18}
+                        fill="currentColor"
+                        strokeWidth={0}
+                        className="mr-0.5"
+                      />
+                    ))}
+                  </div>
+                  <span className="ml-2 text-sm md:text-base text-gray-300">
+                    ({courseData.reviewCount} ratings)
+                  </span>
                 </div>
+                <span className="text-sm md:text-base text-gray-300">
+                  {courseData.students} students
+                </span>
+              </div>
+
+              {/* Instructor Info */}
+              <div className="flex items-center mt-4 space-x-4">
+                <span className="text-gray-300">Created by</span>
+                <a
+                  href="#"
+                  className="font-bold text-[var(--clr-accent-900)] hover:underline"
+                >
+                  {courseData.instructor.name}
+                </a>
+              </div>
+            </header>
+
+            {/* Sidebar Card Section */}
+            <div className="hidden max-lg:block ">
+              <SidebarCard courseData={courseData} />
             </div>
-            
-        </>
-    )
+
+            {/* Course Curriculum Section */}
+            <section className="mt-10">
+              <h2 className="text-2xl md:text-3xl mb-4">Course content</h2>
+
+              {/* Course info + Expand button */}
+              <div className="flex flex-wrap gap-x-4 items-center justify-between">
+                <p className="text-gray-600 text-sm my-2">
+                  33 sections • 231 lectures • 79h 32m total length
+                </p>
+                <button
+                  onClick={() => setOpenSection("all")} // You'll define the logic for expand all
+                  className="sm:px-4 py-2 rounded-md text-[var(--clr-accent-900)] hover:bg-[var(--clr-primary-900)] hover:text-white transition-colors"
+                >
+                  Expand all sections
+                </button>
+              </div>
+
+              {courseData.curriculum.map((section, index) => (
+                <div
+                  key={index}
+                  className="border border-gray-200 rounded-md mb-2"
+                >
+                  <button
+                    onClick={() => toggleSection(index)}
+                    className="flex justify-between items-center w-full p-4 text-left font-bold bg-gray-100 hover:bg-gray-200 transition-colors rounded-t-md focus:outline-none"
+                  >
+                    <span>{section.title}</span>
+                    <div className="flex items-center text-sm text-gray-600">
+                      <span className="mr-4 hidden sm:block">
+                        {section.duration}
+                      </span>
+                      {openSection === index ? (
+                        <ChevronUp size={20} />
+                      ) : (
+                        <ChevronDown size={20} />
+                      )}
+                    </div>
+                  </button>
+
+                  {openSection === index && (
+                    <ul className="p-4 bg-white transition-all duration-300 ease-in-out">
+                      {section.lessons.map((lesson, lessonIndex) => (
+                        <li
+                          key={lessonIndex}
+                          className="flex justify-between items-center py-2 px-2 sm:px-4 border-b last:border-b-0"
+                        >
+                          <span className="flex items-center text-md">
+                            <PlayCircle
+                              size={16}
+                              className="text-gray-500 mr-2"
+                            />
+                            {lesson.title}
+                          </span>
+                          <span className="text-sm text-gray-500">
+                            {lesson.duration}
+                          </span>
+                        </li>
+                      ))}
+                    </ul>
+                  )}
+                </div>
+              ))}
+
+              {/* "20 more sections" button */}
+              <div className="text-center mt-4">
+                <button className="w-full px-6 py-2 border border-[var(--clr-accent-900)] text-[var(--clr-accent-900)] rounded-md font-bold hover:bg-[var(--clr-primary-900)] hover:text-white hover:border-[var(--clr-primary-900)] transition-colors">
+                  20 more sections
+                </button>
+              </div>
+            </section>
+
+            {/* Instructor Section */}
+            <section className="mt-10">
+              <h2 className="text-2xl md:text-3xl mb-8">Instructor</h2>
+              <div className="flex items-center mb-4">
+                <img
+                  src={courseData.instructor.image}
+                  alt={courseData.instructor.name}
+                  className="w-20 h-20 rounded-full mr-4 object-cover"
+                />
+                <div>
+                  <h3 className="text-h5 text-[var(--clr-accent-900)]">
+                    {courseData.instructor.name}
+                  </h3>
+                  <p className="text-[14px] text-gray-600">
+                    {courseData.instructor.title}
+                  </p>
+                </div>
+              </div>
+              <p className="text-gray-700 whitespace-pre-line">
+                {courseData.instructor.bio}
+              </p>
+            </section>
+
+            {/* Student Reviews Section */}
+            <section className="mt-10">
+              <h2 className="text-2xl md:text-3xl mb-8">Student feedback</h2>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6">
+                {courseData.reviews.map((review, index) => (
+                  <div key={index} className=" p-6 border-y-1 border-gray-400">
+                    <div className="flex items-center mb-4">
+                      <img
+                        src={review.avatar}
+                        alt={review.name}
+                        className="w-12 h-12 rounded-full mr-4 object-cover"
+                      />
+                      <div>
+                        <h5 className="">{review.name}</h5>
+                        <div className="flex gap-2">
+                          <div className="flex text-yellow-400 mt-1">
+                            {[...Array(review.rating)].map((_, i) => (
+                              <Star
+                                key={i}
+                                size={14}
+                                fill="currentColor"
+                                strokeWidth={0}
+                              />
+                            ))}
+                          </div>
+                          <span className="text-sm text-gray-700 font-bold">
+                            a month ago
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                    <p className="text-[14px] text-gray-700 italic">
+                      "{review.comment}"
+                    </p>
+                  </div>
+                ))}
+              </div>
+
+              {/* See All Reviews Button */}
+              <div className="mt-6 ">
+                <button
+                  onClick={() => alert("Redirect to all reviews page")}
+                  className="px-6 py-2 bg-[var(--clr-accent-900)] text-white rounded-md hover:bg-[var(--clr-primary-900)] transition-colors"
+                >
+                  See all reviews
+                </button>
+              </div>
+            </section>
+          </div>
+
+          {/* Sidebar Card Section */}
+          <div className="hidden min-lg:block lg:w-1/3 ">
+            <SidebarCard courseData={courseData} />
+          </div>
+        </div>
+      </main>
+    </div>
+  );
 }
 
-export default CourseDetails
+export default CourseDetails;

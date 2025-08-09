@@ -52,7 +52,7 @@ function Home() {
     <>
       <section
         id="hero-section"
-        className="bg-[var(--clr-primary-800)] pt-20 pb-32"
+        className="bg-[var(--clr-primary-800)] pt-40 pb-32"
       >
         <div className="sec-wrap">
           <div className="relative lg:flex lg:items-center gap-10">

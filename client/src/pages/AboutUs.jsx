@@ -4,14 +4,34 @@ import UnderDev from "../components/UI/components/UnderDev";
 function AboutUs() {
   return (
     <>
+      <section
+        id="breadcrumb"
+        className="h-14 mt-20 bg-[var(--clr-accent-100)]"
+      >
+        <nav
+          aria-label="Breadcrumb"
+          className="container flex items-center h-full text-[var(--clr-primary-900)]"
+        >
+          <ol className="flex gap-x-1 ">
+            <li>
+              <a href="/">Home</a>
+            </li>
+            <li aria-hidden="true">›</li>
+            <li>
+              <a className="text-[var(--clr-accent-900)]" href="/AboutUs">
+                AboutUs
+              </a>
+            </li>
+          </ol>
+        </nav>
+      </section>
+
       {/* Heading Section */}
       <section className="bg-[#455CE9] text-white overflow-hidden">
-        <div className="max-w-7xl mx-auto w-full pt-8 p-4 sm:p-8 lg:py-0">
+        <div className="sec-wrap max-sm:pt-8 max-sm:pb-4">
           <div className="relative flex items-center justify-between">
             <div className="flex-1 z-1">
-              <h1 className="text-white mb-3">
-                About Us
-              </h1>
+              <h1 className="text-white mb-3">About Us</h1>
               <p className="">
                 Empowering institutions and organizations with essential
                 cybersecurity knowledge and skills.
@@ -43,6 +63,7 @@ function AboutUs() {
                 role="img"
                 artist="Katerina Limpitsouni"
                 source="https://undraw.co/"
+                className="ml-auto "
               >
                 <title>team work</title>
                 <circle
@@ -501,19 +522,13 @@ function AboutUs() {
                   opacity="0.2"
                 />
               </svg>
-
-              {/* <img
-                src="/images/aboutus.svg"
-                alt="Cybersecurity Team"
-                className="w-full h-auto rounded-lg object-cover object-top"
-              /> */}
             </div>
           </div>
         </div>
       </section>
 
       {/* Main Content */}
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-16">
+      <main className="sec-wrap py-10 sm:py-16">
         <div className="mb-4">
           <span className="sm-title">About Our Agency &rarr;</span>
         </div>
@@ -570,9 +585,7 @@ function AboutUs() {
         <section className="bg-[var(--clr-accent-900)] text-white rounded-2xl p-12 mb-16">
           <div className="grid md:grid-cols-2 gap-12">
             <div>
-              <h3 className="text-white text-4xl mb-6">
-                Our Fun Fact
-              </h3>
+              <h3 className="text-white text-4xl mb-6">Our Fun Fact</h3>
               <p className="text-white text-lg leading-relaxed">
                 Each milestone shows our commitment to cybersecurity, social,
                 and learning, and resource development across the globe.
@@ -602,9 +615,7 @@ function AboutUs() {
         {/* CEO Section */}
         <section className="bg- text-[var(--clr-primary-900)] rounded-2xl sm:border-2 sm:border-[var(--clr-accent-900)] sm:p-12">
           <div className="mb-4">
-            <span className="sm-title">
-              Chief Executive Officer &rarr;
-            </span>
+            <span className="sm-title">Chief Executive Officer &rarr;</span>
           </div>
           <div className="grid lg:grid-cols-3 gap-12 items-start">
             <div className="lg:col-span-1 flex justify-center bg-[#E6E5E3] rounded-[15px] lg:block lg:justify-normal lg:bg-transparent lg:rounded-none">
@@ -615,9 +626,7 @@ function AboutUs() {
               />
             </div>
             <div className="lg:col-span-2">
-              <h3 className="mb-6">
-                GIR Technologies — About Srujan Atluri
-              </h3>
+              <h3 className="mb-6">GIR Technologies — About Srujan Atluri</h3>
               <div className="space-y-4 leading-relaxed">
                 <p>
                   As the Chief Executive Officer of GIR Technologies, I bring

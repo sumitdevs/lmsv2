@@ -69,7 +69,7 @@ function Courses() {
   const pages = getPageButtons();
   return (
     <>
-      <section id="breadcrumb" className="h-14 bg-[var(--clr-accent-100)]">
+      <section id="breadcrumb" className="h-14 mt-20 bg-[var(--clr-accent-100)]">
         <nav
           aria-label="Breadcrumb"
           className="container flex items-center h-full text-[var(--clr-primary-900)]"

@@ -116,7 +116,7 @@ const Card = ({ image, title, description, tags }) => (
 function Services() {
   return (
     <>
-      <section id="breadcrumb" className="h-14 bg-[var(--clr-accent-100)]">
+      <section id="breadcrumb" className="h-14 mt-20 bg-[var(--clr-accent-100)]">
         <nav
           aria-label="Breadcrumb"
           className="container flex items-center h-full text-[var(--clr-primary-900)]"
@@ -288,7 +288,7 @@ function Services() {
             </div>
             <div className="grid lg:grid-cols-2 lg:gap-12 items-center">
               <div>
-                <h2 className="font-black mb-4">
+                <h2 className=" mb-4">
                   Empowering Institutions for a Smarter Future
                 </h2>
               </div>
@@ -321,7 +321,7 @@ function Services() {
             </div>
             <div className="grid lg:grid-cols-2 lg:gap-12 items-center">
               <div>
-                <h2 className="leading-tight font-satoshi font-black mb-4">
+                <h2 className=" mb-4">
                   Empowering Institutions for a Smarter Future
                 </h2>
               </div>
