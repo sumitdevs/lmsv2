@@ -50,6 +50,20 @@ export const login = async (req, res) => {
   }
 };
 
+export const logout = async (req, res) => {
+  try {
+      res.clearCookie("token", {
+        httpOnly: true,
+        secure: true,
+        sameSite: "None"
+      });
+
+      res.status(200).json({status: 1, message: "user logout successfully"});
+  } catch (error) {
+    console.log(error);
+  }
+} 
+
 export const sendEmailController = async (req, res) => {
   const { email } = req.body;
 

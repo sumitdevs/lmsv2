@@ -102,8 +102,8 @@ function CreateCourse() {
     }
 
   return (
-    <div className=' bg-white'>
-        <div className="bg-white sticky top-16 z-10  ">
+    <div className=' bg-white text-gray-800'>
+        <div className="bg-white sticky top-4 z-10  ">
             <div className="mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="flex justify-between py-4">
                     <div className={clsx('w-1/4 progress-step',componentCount<=1? componentCount===1 &&'active':'completed')}>

@@ -41,7 +41,9 @@ const courseSchema = new Schema({
     totalQuizzes: { type: Number, default: 0 },
     readTimeMinutes: { type: Number, default: 0 },
   }
-});
+},
+{timestamps: true}
+);
 
 /*For Now I am commenting it 
 // Middleware to clean up related modules and videos before deleting a course

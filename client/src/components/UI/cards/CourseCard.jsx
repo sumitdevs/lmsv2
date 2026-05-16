@@ -3,23 +3,21 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-function CourseCard({ title, princing, instructor, _id, thumbnail, rating = 4.9 }) {
+function CourseCard({ courseInfo, pricing, lifecycle, metadata, metrics}) {
   // Use a default thumbnail if none is provided
-  const courseImage = thumbnail || '/images/img2.jpg';
-  // Use a default instructor image if none is provided
-  const instructorImage = instructor?.user?.image || '/images/prof1.jpg';
-  const instructorName = instructor?.user?.name || 'Unknown Instructor';
+  const instructorImage = '/images/prof1.jpg';
+  const instructorName =  'Unknown Instructor';
 
   return (
     <div className="bg-white shadow-lg rounded-xl overflow-hidden transition-all duration-300 hover:shadow-2xl">
       {/* Course Image and Rating */}
       <div className="relative">
         <div className="h-48 overflow-hidden">
-          <img className="w-full h-full object-cover" src={courseImage} alt={`Thumbnail for ${title}`} />
+          <img className="w-full h-full object-cover" src={metadata?.thumbnailUrl} alt={`Thumbnail for ${courseInfo?.title}`} />
         </div>
         <div className='absolute bg-[var(--clr-accent-900)] text-white rounded-lg px-3 py-1 flex items-center -bottom-3 right-4 shadow-md'>
           <img className='h-4 w-4 mr-1' src="/icons/star.svg" alt="Star rating icon" />
-          <span className="text-sm font-semibold">{rating}</span>
+          <span className="text-sm font-semibold">{metrics?.avgRating || 4}</span>
         </div>
       </div>
 
@@ -30,11 +28,11 @@ function CourseCard({ title, princing, instructor, _id, thumbnail, rating = 4.9 
           <div className='h-10 w-10 overflow-hidden rounded-full border-2 border-gray-200'>
             <img className='h-full w-full object-cover' src={instructorImage} alt={`Profile of ${instructorName}`} />
           </div>
-          <p className='text-sm text-[var(--clr-primary-400)] font-medium'>{instructorName}</p>
+          <p className='text-sm text-[var(--clr-primary-400)] font-medium'>{courseInfo?.instructor}</p>
         </div>
 
         {/* Course Title */}
-        <h5 className="text-xl font-bold text-[var(--clr-primary-900)] mb-3">{title}</h5>
+        <h5 className="text-xl font-bold text-[var(--clr-primary-900)] mb-3">{courseInfo?.title}</h5>
 
         {/* Course Details */}
         <div className="flex justify-between items-center text-sm text-[var(--clr-primary-400)] mb-6">
@@ -61,10 +59,10 @@ function CourseCard({ title, princing, instructor, _id, thumbnail, rating = 4.9 
         {/* Price and Link */}
         <div className='flex justify-between items-center pt-4 border-t border-gray-200'>
           <p className='text-lg font-bold text-[var(--clr-primary-900)]'>
-            <span className='line-through text-gray-400 mr-2'>${Math.round(princing)}</span>
-            <span className='text-green-500'>Free</span>
+            <span className='line-through text-gray-400 mr-2'>${Math.round(pricing?.price)}</span>
+            <span className='text-green-500'>{ pricing?.isFree ? 'free' : 'paid' }</span>
           </p>
-          <Link to={`/courses/${_id}`} className='text-[var(--clr-accent-900)] font-semibold transition-colors hover:text-[var(--clr-primary-900)]'>
+          <Link to={`/courses/${metadata?.slug}`} className='text-[var(--clr-accent-900)] font-semibold transition-colors hover:text-[var(--clr-primary-900)]'>
             View More &rarr;
           </Link>
         </div>

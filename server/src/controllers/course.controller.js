@@ -1,32 +1,26 @@
 import {
   insertIntoCourse,
   findAllCourses,
-  findCourses,
   findCourseById,
   updateCourseById,
   deleteCourseById,
 } from "../services/db/course.service.js";
+
 
 export const getAllCourses = async (req, res) => {
   try {
     const page = parseInt(req.query.page);
     const limit = parseInt(req.query.limit);
     const skip = (page-1)*limit;
+    
     const courses = await findAllCourses(page,limit,skip);
     res.status(200).json(courses);
   } catch (error) {
+    console.log(error);
     res.status(500).json({ message: "internal error", error });
   }
 };
 
-export const getCourses = async(req,res)=>{
-  try{
-    const courses = await findCourses();
-    res.status(200).json(courses);
-  } catch(err){
-    res.status(500).json({message: "internal errors"});
-  }
-}
 
 export const createCourse = async (req, res) => {
   try {

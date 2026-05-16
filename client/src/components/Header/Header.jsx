@@ -7,7 +7,7 @@ import { FaUser } from "react-icons/fa";
 import { HiMenuAlt3, HiX } from "react-icons/hi";
 
 function Header() {
-  const { user, isAuthenticated, cookieLogin } = useAuthStore();
+  const { user, logout, isAuthenticated, cookieLogin } = useAuthStore();
   const { item } = useCartStore();
   const [menu, setMenu] = useState(null);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -181,15 +181,15 @@ function Header() {
                         </Link>
                       </li>
                       <li>
-                        <Link
-                          to="#"
+                        <button
+                          onClick={() => logout()}
                           className="inline-flex items-center gap-x-2 hover:text-[var(--clr-accent-900)]"
                         >
                           <svg className="h-4 w-4 fill-current">
                             <use href="./icons/sidebar.svg#logout"></use>
                           </svg>
                           Logout
-                        </Link>
+                        </button>
                       </li>
                     </ul>
                   )}
@@ -281,12 +281,12 @@ function Header() {
               >
                 Dashboard
               </Link>
-              <Link
-                to="#"
+              <button
+                onClick={() => logout()}
                 className="block text-white bg-[var(--clr-accent-900)] py-2 text-center rounded-md"
               >
                 Logout
-              </Link>
+              </button>
             </div>
           )}
         </div>

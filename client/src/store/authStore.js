@@ -1,6 +1,6 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
-import { loginUser,registerUser } from "../api/auth";
+import { loginUser, logoutUser, registerUser } from "../api/auth";
 import { getUser } from "../api/user";
 const useAuthStore = create(
   persist(
@@ -16,6 +16,21 @@ const useAuthStore = create(
           set({
             user: data,
             isAuthenticated: true,
+            loading: false,
+          });
+          return {success:true,error:null}
+        } catch (err) {
+          set({ error: err.response.data.errors || err.response.data.message, loading: false });
+          return {success:false,error:err.response.data.errors || err.response.data.message};
+        }
+      },
+      logout: async () => {
+        set({ loading: true, error: null });
+        try {
+          const data = await logoutUser();
+          set({
+            user: null,
+            isAuthenticated: false,
             loading: false,
           });
           return {success:true,error:null}

@@ -5,24 +5,12 @@ export const findAllCourses = async (page,limit,skip) => {
   const courses = await Course.find()
   .skip(skip)
   .limit(limit)
-  .populate({
-    path: 'instructor',
-    select: 'user',
-    populate: {
-    path: 'user',
-    model: 'User',
-    select: 'name'
-  }
-  })
-  .populate('category');
+  .sort({ createdAt: -1 });
   const  total = await Course.countDocuments();
   const totalPages = Math.ceil(total / limit);
   return {courses,currentpage: page,totalPages:totalPages,totalCourses:total}
 };
 
-export const findCourses = async ()=>{
-  return await Course.find();
-}
 
 export const insertIntoCourse = async (CourseData) => {
   return await Course.create(CourseData);

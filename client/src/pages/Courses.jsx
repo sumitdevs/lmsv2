@@ -10,6 +10,7 @@ function Courses() {
   const [search, setSearch] = useState("");
   const [page, setPage] = useState(1);
   const limit = 6;
+  
   const {
     data: courseData,
     isLoading,
@@ -20,40 +21,19 @@ function Courses() {
     keepPreviousData: true,
     staleTime: 1000 * 60 * 5,
   });
-  // const { data: categories } = useQuery({
-  //   queryKey: ["categories"],
-  //   queryFn: fetchCategory,
-  //   staleTime: 1000 * 60 * 5,
-  // });
-  const courses = courseData?.courses;
-  const totalPages = courseData?.totalPages;
+
+
   const handleCategorySelection = (value) => {
     setSelectedCat(value);
   };
 
-  const filterCourses = useMemo(() => {
-    if (selectedCat && search) {
-      if (selectedCat === "all")
-        return courses.filter((course) =>
-          (course?.title).toLowerCase().includes(search.toLowerCase())
-        );
-      return courses.filter(
-        (course) =>
-          course?.category?.name === selectedCat &&
-          (course?.title).toLowerCase().includes(search.toLowerCase())
-      );
-    } else {
-      if (selectedCat === "all") return courses;
-      return courses.filter((course) => course?.category?.name === selectedCat);
-    }
-  }, [selectedCat, isLoading, search, page]);
 
   const getPageButtons = () => {
     const buttons = [];
     const maxButtons = 4;
 
     let start = Math.max(1, page - 1);
-    let end = Math.min(totalPages, start + maxButtons - 1);
+    let end = Math.min(courseData?.totalPages, start + maxButtons - 1);
 
     if (end - start + 1 < maxButtons) {
       start = Math.max(1, end - maxButtons + 1);
@@ -67,6 +47,9 @@ function Courses() {
   };
 
   const pages = getPageButtons();
+  if (isLoading) return <p>Loading...</p>;
+  if (isError) return <p>Failed to load courses</p>;
+  
   return (
     <>
       <section id="breadcrumb" className="h-14 mt-20 bg-[var(--clr-accent-100)]">
@@ -123,7 +106,7 @@ function Courses() {
         <div className="container">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 sm:gap-y-12">
             {!isLoading &&
-              filterCourses?.map((course) => (
+              courseData?.courses?.map((course) => (
                 <CourseCard key={course._id} {...course} />
               ))}
           </div>
@@ -178,7 +161,7 @@ function Courses() {
             <button
               className="px-4 py-2 rounded-lg text-gray-700 bg-gray-200 hover:bg-gray-300 transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed flex items-center"
               aria-label="Next page"
-              disabled={page === totalPages}
+              disabled={page === courseData?.totalPages}
               onClick={() => setPage((prev) => Math.min(prev + 1, totalPages))}
             >
               Next
