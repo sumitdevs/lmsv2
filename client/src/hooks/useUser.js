@@ -5,6 +5,7 @@ export const useUser = ()=>{
     const [user,setUser] = useState({});
     const [loading,setLoading] = useState(false);
     const [error,setError] = useState('');
+    
     //fetch user
     const fetchUser = async ()=>{
         setLoading(true);

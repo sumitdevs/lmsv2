@@ -65,6 +65,7 @@ function CreateCourse() {
             resetCourseStore();
         }
     },[]);
+    
     useEffect(()=>{
         switch(componentCount){
             case 1:

@@ -11,7 +11,11 @@ const videoSchema = new Schema({
         type:String,
         trim:true,
     },
-    url:{
+    secUrl:{
+        type:String,
+        trim:true,
+    },
+    playUrl:{
         type:String,
         trim:true,
     },

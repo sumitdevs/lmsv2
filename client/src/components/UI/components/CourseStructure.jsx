@@ -2,7 +2,7 @@ import { useState,useEffect } from 'react'
 import AddLesson from './AddLesson';
 import AddModule from './AddModule';
 import useCourseStore from '../../../store/courseStore';
-import { uploadVideo } from '../../../api/courses';
+import { uploadVideo, patchVideo } from '../../../api/courses';
 import clsx from "clsx";
 function CourseStructure() {
     const[showAddLesson,setShowAddLesson] = useState(false);
@@ -15,17 +15,18 @@ function CourseStructure() {
     useEffect(()=>{
         while(peek()){
             (async () =>{ 
-                const{file,_id,module} = dequeue();
+                const{file, _id, module} = dequeue();
                 const formData = new FormData();
                 formData.append("video", file);
                 try{
-                    await uploadVideo(formData,(progress)=>{
+                    await uploadVideo(formData, (progress)=>{
                     setProgress(progress);
                     updateVideo(module,_id,{progress:progress})
                     console.log(progress);
-                    },(data)=>{
-                        const{upload} = data;
+                    }, async (data)=>{
+                        const {upload } = data;
                         if(upload){
+                            await patchVideo('4358345', '4358345', _id, upload);
                             updateVideo(module,_id,upload,{isError:false});
                             return;
                         }

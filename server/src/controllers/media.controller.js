@@ -1,5 +1,6 @@
 // media.controller.js
 import cloudinary from "../config/cloudinary.config.js";
+import { updateVideoById } from "../services/db/video.service.js";
 import path from "path";
 import { fileURLToPath } from "url";
 
@@ -49,7 +50,6 @@ const __dirname = path.dirname(__filename);
 export const uploadMedia = async (req, res) => {
   try {
     const file = req.files?.video; // single file expected
-
     if (!file) {
       return res.status(400).json({ error: "No file uploaded" });
     }
@@ -67,8 +67,8 @@ export const uploadMedia = async (req, res) => {
     res.status(200).json({
       message: "Video uploaded successfully",
       upload: {
-        url: result.secure_url,
-        public_id: result.public_id,
+        secUrl: result.secure_url,
+        playUrl: result.playback_url,
         duration: result.duration,
       },
     });

@@ -12,7 +12,7 @@ export const insertVideoIntoModule = async (videoData)=>{
 export const findVideoById = async (videoId)=>{
     return Video.findById(videoId);
 };
-export const updateVideoById = async (videoId,updateData)=>{
+export const updateVideoById = async (videoId, updateData)=>{
     return await Video.findByIdAndUpdate(videoId,updateData,{new:true});
 };
 export const deleteVideoById = async (videoId)=>{

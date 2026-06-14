@@ -21,7 +21,7 @@ export const createVideoToModule = async (req,res)=>{
         const videoData = req.body;
         console.log(videoData);
         const moduleId = req.params.moduleid;
-        const newVideo = await insertVideoIntoModule({...videoData,module:moduleId});
+        const newVideo = await insertVideoIntoModule({...videoData, module:moduleId});
         res.status(200).json(newVideo);
     } catch(error){
         res.status(500).json({message:'internal error',error});
@@ -42,7 +42,7 @@ export const updateVideo = async (req,res)=>{
     try{
         const videoId = req.params.videoid;
         const videoData = req.body;
-        const udatedVideo = await updateVideoById(videoId,videoData);
+        const udatedVideo = await updateVideoById(videoId, videoData);
         res.status(200).json(udatedVideo);
     } catch(error){
         res.status(500).json({message:'internal error',error});
